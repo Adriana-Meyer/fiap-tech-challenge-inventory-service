@@ -184,6 +184,13 @@ class SupplyControllerTest {
     }
 
     @Test
+    void shouldAnswer400WhenThePathIdIsNotAUuid() throws Exception {
+        mockMvc.perform(get("/api/v1/supplies/not-a-uuid"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Invalid value for 'id'"));
+    }
+
+    @Test
     void shouldAnswer500WithoutLeakingDetailsOnUnexpectedErrors() throws Exception {
         when(findUseCase.findAll()).thenThrow(new IllegalStateException("db exploded"));
 

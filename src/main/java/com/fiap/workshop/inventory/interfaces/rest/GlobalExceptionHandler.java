@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -27,6 +28,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleMalformedRequest(HttpMessageNotReadableException ex) {
         return new ErrorResponse(400, "Bad Request", "Malformed request body", LocalDateTime.now());
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleInvalidPathValue(MethodArgumentTypeMismatchException ex) {
+        return new ErrorResponse(400, "Bad Request", "Invalid value for '" + ex.getName() + "'", LocalDateTime.now());
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
