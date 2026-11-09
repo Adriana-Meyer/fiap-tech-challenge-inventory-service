@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/inventory_db
+    username: inventory
+    password: inventory123
+
+logging:
+  level:
+    com.fiap.workshop: INFO
