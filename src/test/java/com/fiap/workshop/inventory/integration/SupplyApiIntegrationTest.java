@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(properties = "app.jwt.secret=" + JwtTestTokens.SECRET)
+@TestPropertySource(properties = {"app.jwt.secret=" + JwtTestTokens.SECRET, "app.messaging.enabled=false"})
 @DisplayName("Supply API (integration)")
 class SupplyApiIntegrationTest {
 
@@ -158,5 +158,15 @@ class SupplyApiIntegrationTest {
         mockMvc.perform(get("/api/v1/supplies/{id}", "00000000-0000-0000-0000-000000000000")
                         .header("Authorization", bearer("ADMIN")))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("should let stock roles read a reservation and keep it from mechanics")
+    void shouldLetStockRolesReadAReservationAndKeepItFromMechanics() throws Exception {
+        String url = "/api/v1/stock-reservations/" + java.util.UUID.randomUUID();
+
+        mockMvc.perform(get(url).header("Authorization", bearer("STOCKIST"))).andExpect(status().isNotFound());
+        mockMvc.perform(get(url).header("Authorization", bearer("MECHANIC"))).andExpect(status().isForbidden());
+        mockMvc.perform(get(url)).andExpect(status().isUnauthorized());
     }
 }
