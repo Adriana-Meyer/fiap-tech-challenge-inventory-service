@@ -42,6 +42,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, SUPPLIES + "/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, SUPPLIES + "/*/stock").hasAnyRole("STOCKIST", "ADMIN")
 
+                        .requestMatchers(HttpMethod.GET, "/api/v1/stock-reservations/**")
+                                .hasAnyRole("STOCKIST", "CONSULTANT", "ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex

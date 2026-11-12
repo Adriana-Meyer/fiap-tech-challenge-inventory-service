@@ -1,5 +1,6 @@
 package com.fiap.workshop.inventory.domain.model.supply;
 
+import com.fiap.workshop.inventory.domain.exception.InsufficientStockException;
 import com.fiap.workshop.inventory.domain.model.shared.Money;
 
 import java.util.UUID;
@@ -41,6 +42,15 @@ public class Supply {
     }
 
     public void deductStock(int quantity) {
+        this.stockQuantity -= quantity;
+    }
+
+    /** Takes stock off the shelf for an order; refuses when there is not enough. */
+    public void reserve(int quantity) {
+        if (quantity <= 0) throw new IllegalArgumentException("Quantity must be positive");
+        if (stockQuantity < quantity) {
+            throw new InsufficientStockException(id, name, quantity, stockQuantity);
+        }
         this.stockQuantity -= quantity;
     }
 

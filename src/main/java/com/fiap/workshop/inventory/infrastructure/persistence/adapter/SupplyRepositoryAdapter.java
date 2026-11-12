@@ -37,6 +37,14 @@ public class SupplyRepositoryAdapter implements SupplyRepository {
     }
 
     @Override
+    public List<Supply> findAllByIdForUpdate(java.util.Collection<UUID> ids) {
+        if (ids.isEmpty()) {
+            return List.of();
+        }
+        return jpaRepository.findAllByIdForUpdate(ids).stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
     public List<Supply> findAll() {
         return jpaRepository.findAll().stream().map(mapper::toDomain).toList();
     }

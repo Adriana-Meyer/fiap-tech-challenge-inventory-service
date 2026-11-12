@@ -5,6 +5,9 @@ metadata:
   namespace: inventory
 data:
   SPRING_PROFILES_ACTIVE: docker
+  AWS_REGION: us-east-1
+  # Created by inventory-infrastructure (queue + DLQ). EVENTS_TOPIC_ARN is added by deploy-aws.yml.
+  COMMANDS_QUEUE: inventory-commands
   NEW_RELIC_APP_NAME: workshop-inventory-service
   NEW_RELIC_LOG: STDOUT
   NEW_RELIC_APPLICATION_LOGGING_ENABLED: "true"

@@ -14,6 +14,13 @@ public interface SupplyRepository {
 
     Optional<Supply> findByCode(String code);
 
+    /**
+     * Loads the supplies locking their rows until the transaction ends, in id
+     * order so that two reservations touching the same supplies cannot
+     * deadlock. Unknown ids are simply absent from the result.
+     */
+    List<Supply> findAllByIdForUpdate(java.util.Collection<UUID> ids);
+
     List<Supply> findAll();
 
     List<Supply> findBelowMinimumStock();
