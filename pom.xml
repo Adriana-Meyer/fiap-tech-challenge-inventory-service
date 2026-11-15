@@ -15,7 +15,7 @@
     <artifactId>inventory</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>workshop-inventory-service</name>
-    <description>FIAP Tech Challenge - Phase 4 - Inventory microservice (supplies and stock)</description>
+    <description>FIAP Tech Challenge - Inventory microservice (supplies and stock)</description>
 
     <properties>
         <java.version>17</java.version>
