@@ -284,11 +284,16 @@ class SagaMessagingIntegrationTest {
     @Test
     @DisplayName("should confirm a release when nothing was reserved")
     void shouldConfirmAReleaseWhenNothingWasReserved() throws Exception {
+        UUID sagaId = UUID.randomUUID();
         UUID orderId = UUID.randomUUID();
 
-        send(UUID.randomUUID(), orderId, "ReleaseStock", "{}");
+        send(sagaId, orderId, "ReleaseStock", "{}");
 
-        awaitEvent(orderId, "StockReleased");
+        JsonNode released = awaitEvent(orderId, "StockReleased");
+        assertEquals(sagaId.toString(), released.get("sagaId").asText());
+        assertEquals(orderId.toString(), released.get("serviceOrderId").asText());
+        assertEquals(1, countEvents(orderId, "StockReleased"));
+        assertTrue(reservationRepository.findByServiceOrderId(orderId).isEmpty());
     }
 
     @Test
